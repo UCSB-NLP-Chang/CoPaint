@@ -1,0 +1,135 @@
+########################################################################
+# Usage:
+# All parameters could be specified by argparse, e.g. simply run the python script with ``--model_path xxx'' will change
+# ``model_path'' parameter during running. Nested params ``--ddim.schedule_params.ddpm_num_steps xxx'' is also supported.
+########################################################################
+
+
+########################################################################
+##  basic configs
+########################################################################
+model_path: ./checkpoints/256x256_diffusion.pt
+classifier_path: ./checkpoints/256x256_classifier.pt
+dataset_name: imagenet
+dataset_starting_index: -1 # specify the starting index, -1 means 0
+dataset_ending_index: -1 # specify the ending index, -1 means len(dataset)
+mask_type: half
+seed: 42
+use_git: false
+n_samples: 10
+n_iter: 1
+outdir: ./images/imagenet
+algorithm: o_ddim
+resume: false # will load previous results if there are some
+mode: inpaint
+debug: false
+
+
+########################################################################
+## algorithm specific configs
+########################################################################
+ddim:
+  ddim_sigma: 0.0
+  schedule_params:
+    num_inference_steps: 250
+    ddpm_num_steps: 250
+    schedule_type: linear
+    jump_length: 1
+    jump_n_sample: 1
+    use_timetravel: false
+    time_travel_filter_type: none
+
+resample:
+  keep_n_samples: 2 # n_samples images would be generated, while keep_n_samples images would be returned.
+
+optimize_xt:
+  optimize_xt: true
+  num_iteration_optimize_xt: 2
+  lr_xt: 0.02
+  lr_xt_decay: 1.012
+  use_smart_lr_xt_decay: true
+  use_adaptive_lr_xt: true
+  coef_xt_reg: 0.01
+  coef_xt_reg_decay: 1.0
+  mid_interval_num: 1
+  optimize_before_time_travel: true
+  filter_xT: false
+
+repaint:
+  schedule_jump_params:
+    t_T: 250
+    n_sample: 1
+    jump_length: 10
+    jump_n_sample: 10
+  inpa_inj_sched_prev: true
+  inpa_inj_sched_prev_cumnoise: false
+
+ddnm:
+  schedule_jump_params:
+    t_T: 250
+    n_sample: 1
+    jump_length: 1
+    jump_n_sample: 1
+
+ddrm:
+  schedule_jump_params:
+    t_T: 250
+    n_sample: 1
+    jump_length: 1
+    jump_n_sample: 1
+
+dps:
+  step_size: 0.5
+  eta: 1.0
+  schedule_jump_params:
+    t_T: 250
+    n_sample: 1
+    jump_length: 1
+    jump_n_sample: 1
+  
+########################################################################
+## single image inference
+########################################################################
+input_image: ""
+mask: ""
+
+########################################################################
+### unet configs, no need to change
+########################################################################
+cond_y: 
+attention_resolutions: 32,16,8
+class_cond: true
+diffusion_steps: 1000
+learn_sigma: true
+noise_schedule: linear
+num_channels: 256
+num_head_channels: 64
+num_heads: 4
+num_res_blocks: 2
+resblock_updown: true
+use_fp16: true
+use_scale_shift_norm: true
+classifier_scale: 1.0
+lr_kernel_n_std: 2
+num_samples: 100
+show_progress: true
+timestep_respacing: '250'
+use_kl: false
+predict_xstart: false
+rescale_timesteps: false
+rescale_learned_sigmas: false
+classifier_use_fp16: false
+classifier_width: 128
+classifier_depth: 2
+classifier_attention_resolutions: 32,16,8
+classifier_use_scale_shift_norm: true
+classifier_resblock_updown: true
+classifier_pool: attention
+num_heads_upsample: -1
+channel_mult: ''
+dropout: 0.0
+use_checkpoint: false
+use_new_attention_order: false
+clip_denoised: true
+use_ddim: false
+image_size: 256

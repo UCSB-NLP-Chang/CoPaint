@@ -1,0 +1,26 @@
+name: copaint
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8.5
+  - pip=20.3
+  - cudatoolkit=11.3
+  - pytorch=1.13.0
+  - torchvision=0.12.0
+  - numpy=1.23
+  - pandas=1.5
+  - tqdm
+  - pyYaml
+  - pillow
+  - filelock
+  - joblib
+  - gitpython
+  - gdown
+  - unzip
+  - pip:
+    - lpips
+    - blobfile
+    - lxml
+    - opencv-python==4.7.0.72
