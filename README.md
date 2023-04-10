@@ -1,6 +1,6 @@
 # Towards Coherent Image Inpainting Using Denoising Diffusion Implicit Models
 
-This is the official impelmenation of the paper [Diffusion InpaintingDiffusion Inpainting]().
+This is the official impelmenation of the paper [Diffusion InpaintingDiffusion Inpainting](https://arxiv.org/pdf/2304.03322.pdf).
 
 ## Abstract
 Image inpainting refers to the task of generating
