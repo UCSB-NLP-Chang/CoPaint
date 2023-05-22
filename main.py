@@ -59,7 +59,7 @@ def prepare_model(algorithm, conf, device):
     unet.load_state_dict(
         dist_util.load_state_dict(
             os.path.expanduser(conf.model_path), map_location="cpu"
-        )
+        ), strict=False
     )
     unet.to(device)
     if conf.use_fp16:
@@ -203,6 +203,7 @@ def main():
             image, mask, image_name, class_id = data
         else:
             image, mask, image_name = data
+            class_id = None
         # prepare save dir
         outpath = os.path.join(config.outdir, image_name)
         os.makedirs(outpath, exist_ok=True)
@@ -217,12 +218,13 @@ def main():
             "gt": batch["image"].repeat(batch_size, 1, 1, 1),
             "gt_keep_mask": batch["mask"].repeat(batch_size, 1, 1, 1),
         }
-        if config.cond_y is not None:
-            classes = torch.ones(batch_size, dtype=torch.long, device=device)
-            model_kwargs["y"] = classes * config.cond_y
-        elif config.classifier_path is not None:
-            classes = torch.full((batch_size,), class_id, device=device)
-            model_kwargs["y"] = classes
+        if config.class_cond:
+            if config.cond_y is not None:
+                classes = torch.ones(batch_size, dtype=torch.long, device=device)
+                model_kwargs["y"] = classes * config.cond_y
+            elif config.classifier_path is not None:
+                classes = torch.full((batch_size,), class_id, device=device)
+                model_kwargs["y"] = classes
 
         shape = (batch_size, 3, config.image_size, config.image_size)
 
