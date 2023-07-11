@@ -165,24 +165,8 @@ def main():
 
     def model_fn(x, t, y=None, gt=None, **kwargs):
         return unet(x, t, y if config.class_cond else None, gt=gt)
-
-    if config.classifier_path and config.classifier_scale >= 1.0:
-        classifier = prepare_classifier(config, device)
-
-        def cond_fn(x, t, y=None, gt=None, **kwargs):
-            assert y is not None
-            with torch.enable_grad():
-                x_in = x.detach().requires_grad_(True)
-                logits = classifier(x_in, t)
-                log_probs = torch.nn.functional.log_softmax(logits, dim=-1)
-                selected = log_probs[range(len(logits)), y.view(-1)]
-                return (
-                    torch.autograd.grad(selected.sum(), x_in)[0]
-                    * config.classifier_scale
-                )
-
-    else:
-        cond_fn = None
+    
+    cond_fn = None
 
     METRICS = {
         "lpips": Metric(LPIPS("alex", device)),
