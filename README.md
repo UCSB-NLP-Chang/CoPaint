@@ -3,35 +3,7 @@
 This is the official impelmenation of the paper [Towards Coherent Image Inpainting Using Denoising Diffusion Implicit Models](https://arxiv.org/pdf/2304.03322.pdf).
 
 ## Abstract
-Image inpainting refers to the task of generating
-a complete, natural image based on a partially re-
-vealed reference image. Recently, many research
-interests have been focused on addressing this
-problem using fixed diffusion models. These ap-
-proaches typically directly replace the revealed re-
-gion of the intermediate or final generated images
-with that of the reference image or its variants.
-However, since the unrevealed regions are not di-
-rectly modified to match the context, it results
-in incoherence between revealed and unrevealed
-regions. To address the incoherence problem, a
-small number of methods introduce a rigorous
-Bayesian framework, but they tend to introduce
-mismatches between the generated and the ref-
-erence images due to the approximation errors
-in computing the posterior distributions. In this
-paper, we propose COPAINT, which can coher-
-ently inpaint the whole image without introducing
-mismatches. COPAINT also uses the Bayesian
-framework to jointly modify both revealed and
-unrevealed regions, but approximates the poste-
-rior distribution in a way that allows the errors to
-gradually drop to zero throughout the denoising
-steps, thus strongly penalizing any mismatches
-with the reference image. Our experiments ver-
-ify that COPAINT can outperform the existing
-diffusion-based methods under both objective and
-subjective metrics.
+Image inpainting refers to the task of generating a complete, natural image based on a partially revealed reference image. Recently, many research interests have been focused on addressing this problem using fixed diffusion models. These approaches typically directly replace the revealed region of the intermediate or final generated images with that of the reference image or its variants.  However, since the unrevealed regions are not directly modified to match the context, it results in incoherence between revealed and unrevealed regions. To address the incoherence problem, a small number of methods introduce a rigorous Bayesian framework, but they tend to introduce mismatches between the generated and the reference images due to the approximation errors in computing the posterior distributions. In this paper, we propose COPAINT, which can coherently inpaint the whole image without introducing mismatches. COPAINT also uses the Bayesian framework to jointly modify both revealed and unrevealed regions, but approximates the posterior distribution in a way that allows the errors to gradually drop to zero throughout the denoising steps, thus strongly penalizing any mismatches with the reference image. Our experiments verify that COPAINT can outperform the existing diffusion-based methods under both objective and subjective metrics.
 
 ## Requirements
 ### Environment
@@ -46,7 +18,7 @@ bash scripts/download.sh
 ```
 This script will download pretrained diffusion models from [guided-diffusion](https://github.com/openai/guided-diffusion) and [repaint](https://github.com/andreas128/RePaint).
 
-Then it will download and preprocess `CelebA-HQ` dataset according to the data split in [Lama](https://github.com/saic-mdal/lama). The images we used for `ImageNet` dataset are provided in `datasets/imagenet100`.
+Then it will download and preprocess `CelebA-HQ` dataset according to the data split in [Lama](https://github.com/saic-mdal/lama). The images we used for `ImageNet` dataset should be placed in `datasets/imagenet100`, which could be downloaded [here](https://drive.google.com/drive/folders/1CTBHK8udyGejJEob-HTL1MrmtkqC_3gr?usp=sharing).
 
 ## Usage
 ### Inpainting with `CoPaint`
